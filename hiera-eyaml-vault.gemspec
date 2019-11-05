@@ -16,7 +16,7 @@ Gem::Specification.new do |gem|
 
   gem.homepage      = "http://github.com/crayfishx/hiera-eyaml-vault"
   gem.files         = Rake::FileList["lib/**/*"].to_a
-  gem.add_dependency 'hiera-http', '< 4.0.0'
+  gem.add_dependency 'hiera-eyaml', '< 4.0.0'
 end
 
 
