@@ -78,7 +78,7 @@ See the documentation for [Hiera-Eyaml](https://github.com/voxpupuli/hiera-eyaml
 ### Example
 
 ```
-cat ~/.eyaml/config
+cat ~/.eyaml/config.yaml
 
 ---
 encrypt_method: vault
