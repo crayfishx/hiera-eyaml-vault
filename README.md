@@ -48,6 +48,14 @@ $ vault policy write hiera hiera_policy.hcl
 
 #### Create an Approle to use the Hiera policy
 
+Enable the approle auth method
+
+```
+$ vault auth enable approle
+```
+
+Create the approle
+
 ```
 $ vault write auth/approle/role/hiera token_ttl=10m policies=hiera
 ```
