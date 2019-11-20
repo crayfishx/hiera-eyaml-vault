@@ -48,6 +48,16 @@ class Hiera
               default: true
             },
 
+            :ssl_cert => {
+              desc: "SSL Certificate to connect with",
+              type: :string
+            },
+
+            :ssl_key => {
+              desc: "SSL Private key to connect with",
+              type: :string
+            },
+
             :keyname => {
               desc: "Vault transit key name (default 'hiera')",
               type: :string,
@@ -62,12 +72,33 @@ class Hiera
           }
           class << self
 
+            def config_file
+              ENV['EYAML_CONFIG'] || File.join(ENV['HOME'], '.eyaml/config.yaml') || '/etc/eyaml/config.yaml'
+            end
+
+            def load_config
+              if File.exists?(config_File)
+                @config_defaults = YAML.load_file(config_file)
+              end
+            end
+
+            # Allow the inherited options method to allow for local
+            # configuration to fall back on
+            #
+            def option(key)
+              return super(key) if super(key)
+
+              load_config if @config_defaults.nil?
+              unless @config_defaults.nil?
+                return @config_defaults[key.to_s] if @config_defaults[key.to_s]
+              end
+              super
+            end
+
             def create_keys
               diagnostic_message = self.option :diagnostic_message 
               puts "Create_keys: #{diagnostic_message}"
             end
-
-            #### BEGIN IMPORT
 
             def vault_url(endpoint)
               uri = []
@@ -111,12 +142,13 @@ class Hiera
 
 
             def token_configured?
+              return true if ENV['VAULT_TOKEN']
               not option(:token).nil?
             end
 
             def token
               authenticate
-              option(:token) || @approle_token
+              ENV['VAULT_TOKEN'] || option(:token) || @approle_token
             end
 
             def authenticate
