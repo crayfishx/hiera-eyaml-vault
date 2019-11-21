@@ -14,7 +14,7 @@ class Hiera
           end
 
 
-          VERSION = "1.0.0"
+          VERSION = "1.0.1"
           HTTP_HANDLER = Hiera::Backend::Eyaml::Encryptors::Vault::Httphandler
 
           self.tag = 'VAULT'
