@@ -77,7 +77,7 @@ class Hiera
             end
 
             def load_config
-              if File.exists?(config_File)
+              if File.exists?(config_file)
                 @config_defaults = YAML.load_file(config_file)
               end
             end
